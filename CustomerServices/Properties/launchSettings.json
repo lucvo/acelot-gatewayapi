@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "CustomerServices": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/customers",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5001/"
+    }
+  }
+}

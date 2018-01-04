@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - apigateway
+    restart: always
+    environment:
+      DOMAINS: 'vip.com -> http://apigateway'
+      STAGE: 'local'
+      FORCE_RENEW: 'true'
+
+
+  customerservices:
+    image: vip/customerservices
+    build:
+      context: ./CustomerServices
+      dockerfile: Dockerfile
+
+  productservices:
+    image: vip/productservices
+    build:
+      context: ./ProductServices
+      dockerfile: Dockerfile
+  apigateway:
+    image: vip/gateway
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile
