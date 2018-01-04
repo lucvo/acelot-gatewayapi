@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{019ADEE0-A2A1-43A4-8151-91477AF556E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "Src\ApiGateway\ApiGateway.csproj", "{019ADEE0-A2A1-43A4-8151-91477AF556E5}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6888B9CC-DC41-4BB1-8BB1-EBD21EFEF5FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerServices", "CustomerServices\CustomerServices.csproj", "{5906A046-F0CE-4A64-80C7-ADA5B11F22F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerServices", "Src\CustomerServices\CustomerServices.csproj", "{5906A046-F0CE-4A64-80C7-ADA5B11F22F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductServices", "ProductServices\ProductServices.csproj", "{DEDDCC3C-4C5B-46CC-9C51-6DDA03D2D0F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductServices", "Src\ProductServices\ProductServices.csproj", "{DEDDCC3C-4C5B-46CC-9C51-6DDA03D2D0F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

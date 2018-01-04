@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProductServices.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("")]
     public class ProductsController : Controller
     {
         // GET api/values

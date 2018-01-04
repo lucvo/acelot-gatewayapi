@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerServices.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("")]
     public class CustomersController : Controller
     {
         // GET api/values
@@ -17,7 +17,7 @@ namespace CustomerServices.Controllers
 		}
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("[controller]/{id}")]
         public string Get(int id)
         {
 			return $"Catcher Wong - {id}";

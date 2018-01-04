@@ -1,0 +1,36 @@
+﻿{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "customerservices",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/customers",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/customers/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHost": "customerservices",
+      "DownstreamPort": 80,
+      "UpstreamPathTemplate": "/customers/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "LoadBalancer": "LeastConnection",
+      "UseServiceDiscovery": false
+    },
+    {
+      "DownstreamPathTemplate": "/",
+      "DownstreamScheme": "http",
+      "DownstreamPort": 80,
+      "DownstreamHost": "productservices",
+      "UpstreamPathTemplate": "/products",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "LoadBalancer": "LeastConnection",
+      "UseServiceDiscovery": false
+    }
+  ],
+	"GlobalConfiguration": {
+		"RequestIdKey": "OcRequestId",
+		"AdministrationPath": "/administration"
+	}
+}  

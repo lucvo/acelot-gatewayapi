@@ -11,7 +11,7 @@ services:
       - apigateway
     restart: always
     environment:
-      DOMAINS: 'vip.com -> http://apigateway'
+      DOMAINS: 'services.vip.com -> http://apigateway'
       STAGE: 'local'
       FORCE_RENEW: 'true'
 
@@ -19,16 +19,16 @@ services:
   customerservices:
     image: vip/customerservices
     build:
-      context: ./CustomerServices
+      context: ./Src/CustomerServices
       dockerfile: Dockerfile
 
   productservices:
     image: vip/productservices
     build:
-      context: ./ProductServices
+      context: ./Src/ProductServices
       dockerfile: Dockerfile
   apigateway:
     image: vip/gateway
     build:
-      context: ./ApiGateway
+      context: ./Src/ApiGateway
       dockerfile: Dockerfile
