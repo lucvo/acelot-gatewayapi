@@ -4,15 +4,17 @@ services:
   apigateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - identityUrl=http://identityservices
     ports:
       - "5000:80"
 
   customerservices:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - identityUrl=http://identityservices
     ports:
       - "5001:80"
-
+      
   productservices:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

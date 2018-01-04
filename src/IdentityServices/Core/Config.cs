@@ -25,8 +25,8 @@ namespace IdentityServices.Core
         {
             return new List<ApiResource>
             {
-                new ApiResource("Customers", "Customer Services API"),
-                new ApiResource("Products", "Product Services API")
+                new ApiResource("CustomerServices", "Customer Services API"),
+                new ApiResource("ProductServices", "Product Services API")
             };
         }
 
