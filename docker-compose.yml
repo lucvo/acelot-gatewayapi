@@ -19,16 +19,26 @@ services:
   customerservices:
     image: vip/customerservices
     build:
-      context: ./Src/CustomerServices
+      context: ./src/CustomerServices
       dockerfile: Dockerfile
 
   productservices:
     image: vip/productservices
     build:
-      context: ./Src/ProductServices
+      context: ./src/ProductServices
       dockerfile: Dockerfile
   apigateway:
     image: vip/gateway
     build:
-      context: ./Src/ApiGateway
+      context: ./src/ApiGateway
       dockerfile: Dockerfile
+  identityservices:
+    image: identityservices
+    build:
+      context: ./src/IdentityServices
+      dockerfile: Dockerfile
+    depends_on:
+      - sql.data
+
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest

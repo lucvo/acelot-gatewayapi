@@ -6,6 +6,7 @@
     <ProjectGuid>6888b9cc-dc41-4bb1-8bb1-ebd21efef5fb</ProjectGuid>
     <DockerLaunchBrowser>true</DockerLaunchBrowser>
     <DockerServiceUrl>http://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceName>identityservices</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.ci.build.yml" />

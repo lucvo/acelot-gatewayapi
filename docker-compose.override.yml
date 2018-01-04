@@ -18,3 +18,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5002:80"
+  identityservices:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString=${DefaultConnection:-Server=sql.data;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word}
+    ports:
+      - "7000:80"
+
+  sql.data:
+    environment:
+      - MSSQL_SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+    ports:
+      - "5433:1433"
