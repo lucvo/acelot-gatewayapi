@@ -40,12 +40,12 @@ namespace IdentityServices.Core
                 {
                     ClientId = "client",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-
+                   
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "Customers" , "Products" }
+                    AllowedScopes = { "CustomerServices" }
                 },
 
                 // resource owner password grant client
@@ -58,7 +58,7 @@ namespace IdentityServices.Core
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "Customers" }
+                    AllowedScopes = { "CustomerServices" }
                 }
             };
         }

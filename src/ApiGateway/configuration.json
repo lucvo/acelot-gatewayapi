@@ -16,6 +16,10 @@
       "UpstreamPathTemplate": "/customers/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "LoadBalancer": "LeastConnection",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": [ "CustomerServices" ]
+      },
       "UseServiceDiscovery": false
     },
     {

@@ -15,6 +15,8 @@ using System.Reflection;
 using IdentityServices.Core;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace IdentityServices
 {
@@ -59,12 +61,21 @@ namespace IdentityServices
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
             services.AddMvc();
-
-            // configure identity server with in-memory stores, keys, clients and scopes
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Sample", policyBuilder =>
+                {
+                    policyBuilder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
+            var cert = new X509Certificate2(
+                Path.Combine(Directory.GetCurrentDirectory(), @"auth_cert.pfx"), "P@!!w04d");
             services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
+                .AddSigningCredential(cert)
                 .AddAspNetIdentity<ApplicationUser>()
                 // this adds the config data from DB (clients, resources)
                 .AddConfigurationStore(options =>
@@ -89,8 +100,7 @@ namespace IdentityServices
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // this will do the initial DB population
-            InitializeDatabase(app);
+           
 
             if (env.IsDevelopment())
             {
@@ -102,10 +112,12 @@ namespace IdentityServices
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            // this will do the initial DB population
+            InitializeDatabase(app);
             app.UseStaticFiles();
 
             //app.UseAuthentication();
+            app.UseCors("Sample");
             app.UseIdentityServer();
             app.UseMvc(routes =>
             {
@@ -119,7 +131,7 @@ namespace IdentityServices
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-
+                serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
                 if (!context.Clients.Any())
@@ -148,6 +160,21 @@ namespace IdentityServices
                     }
                     context.SaveChanges();
                 }
+                
+                //var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                //if (!userManager.Users.Any())
+                //{
+                //    foreach (var testUser in Config.GetUsers())
+                //    {
+                //        var identityUser = new IdentityUser(testUser.Username)
+                //        {
+                //            Id = testUser.SubjectId
+                //        };
+
+                //        userManager.CreateAsync(identityUser, "Password123!").Wait();
+                //        userManager.AddClaimsAsync(identityUser, testUser.Claims.ToList()).Wait();
+                //    }
+                //}
             }
         }
     }

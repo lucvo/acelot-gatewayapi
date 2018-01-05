@@ -32,16 +32,13 @@ namespace CustomerServices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore()
-            .AddAuthorization()
-            .AddJsonFormatters();
+            services.AddMvc();
 
-            services.AddAuthentication("Bearer")
+            services.AddAuthentication()
                 .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = Configuration["identityUrl"];
                     options.RequireHttpsMetadata = false;
-
                     options.ApiName = "CustomerServices";
                 });
         }

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace ProductServices.Controllers
 {
     [Route("")]
-    [Authorize]
     public class ProductsController : Controller
     {
         // GET api/values

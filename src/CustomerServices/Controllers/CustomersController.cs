@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace CustomerServices.Controllers
 {
     [Route("")]
-    [Authorize]
+    
     public class CustomersController : Controller
     {
         // GET api/values
@@ -20,9 +20,10 @@ namespace CustomerServices.Controllers
 
         // GET api/values/5
         [HttpGet("[controller]/{id}")]
+        [Authorize]
         public string Get(int id)
         {
-			return $"Catcher Wong - {id}";
+            return $"Catcher Wong - {id}";
 		}
 
         

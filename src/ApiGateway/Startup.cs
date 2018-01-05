@@ -1,4 +1,5 @@
 ﻿using CacheManager.Core;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,26 @@ namespace SampeHttps
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddOcelot(Configuration)
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Sample", policyBuilder =>
+                {
+                    policyBuilder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
+            var authenticationProviderKey = "TestKey";
+
+            services.AddAuthentication()
+                .AddIdentityServerAuthentication(authenticationProviderKey, o =>
+            {
+                o.Authority = Configuration["identityUrl"];
+                o.ApiName = "CustomerServices";
+                o.RequireHttpsMetadata = false;
+            });
+            services.AddOcelot(Configuration)
 					.AddCacheManager(x => {
 						x.WithMicrosoftLogging(log =>
 						{
@@ -40,7 +60,7 @@ namespace SampeHttps
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-
+            app.UseCors("Sample");
 			app.UseOcelot().Wait();
 		}
 	}

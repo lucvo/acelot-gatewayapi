@@ -18,6 +18,7 @@ services:
   productservices:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - identityUrl=http://identityservices
     ports:
       - "5002:80"
   identityservices:
