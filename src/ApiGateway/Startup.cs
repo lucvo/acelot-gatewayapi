@@ -2,6 +2,7 @@
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,7 +39,7 @@ namespace SampeHttps
                     .AllowAnyHeader();
                 });
             });
-            var authenticationProviderKey = "TestKey";
+            var authenticationProviderKey = "secret";
 
             services.AddAuthentication()
                 .AddIdentityServerAuthentication(authenticationProviderKey, o =>
@@ -47,6 +48,7 @@ namespace SampeHttps
                 o.ApiName = "CustomerServices";
                 o.RequireHttpsMetadata = false;
             });
+
             services.AddOcelot(Configuration)
 					.AddCacheManager(x => {
 						x.WithMicrosoftLogging(log =>
@@ -61,7 +63,19 @@ namespace SampeHttps
 		{
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             app.UseCors("Sample");
-			app.UseOcelot().Wait();
+            var forwardOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+                RequireHeaderSymmetry = false
+            };
+
+            forwardOptions.KnownNetworks.Clear();
+            forwardOptions.KnownProxies.Clear();
+
+            // ref: https://github.com/aspnet/Docs/issues/2384
+            app.UseForwardedHeaders(forwardOptions);
+            app.UseAuthentication();
+            app.UseOcelot().Wait();
 		}
 	}
 }

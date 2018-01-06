@@ -17,7 +17,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "LoadBalancer": "LeastConnection",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
+        "AuthenticationProviderKey": "secret",
         "AllowedScopes": [ "CustomerServices" ]
       },
       "UseServiceDiscovery": false

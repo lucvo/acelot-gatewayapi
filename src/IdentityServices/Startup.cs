@@ -17,6 +17,8 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using Microsoft.AspNetCore.HttpOverrides;
+using IdentityServer4.Configuration;
 
 namespace IdentityServices
 {
@@ -58,7 +60,6 @@ namespace IdentityServices
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddMvc();
@@ -72,9 +73,20 @@ namespace IdentityServices
                     .AllowAnyHeader();
                 });
             });
+         
             var cert = new X509Certificate2(
                 Path.Combine(Directory.GetCurrentDirectory(), @"auth_cert.pfx"), "P@!!w04d");
-            services.AddIdentityServer()
+            services.AddIdentityServer(options =>
+                {
+                    options.PublicOrigin = "https://auth.vip.com";
+                    options.Events = new EventsOptions()
+                    {
+                        RaiseErrorEvents = true,
+                        RaiseFailureEvents = true,
+                        RaiseInformationEvents = true,
+                        RaiseSuccessEvents = true
+                    };
+                })
                 .AddSigningCredential(cert)
                 .AddAspNetIdentity<ApplicationUser>()
                 // this adds the config data from DB (clients, resources)
@@ -93,8 +105,8 @@ namespace IdentityServices
 
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
-                }); ;
+                    options.TokenCleanupInterval = 60;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,7 +127,17 @@ namespace IdentityServices
             // this will do the initial DB population
             InitializeDatabase(app);
             app.UseStaticFiles();
+            var forwardOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+                RequireHeaderSymmetry = false
+            };
 
+            forwardOptions.KnownNetworks.Clear();
+            forwardOptions.KnownProxies.Clear();
+
+            // ref: https://github.com/aspnet/Docs/issues/2384
+            app.UseForwardedHeaders(forwardOptions);
             //app.UseAuthentication();
             app.UseCors("Sample");
             app.UseIdentityServer();

@@ -20,7 +20,6 @@ namespace CustomerServices.Controllers
 
         // GET api/values/5
         [HttpGet("[controller]/{id}")]
-        [Authorize]
         public string Get(int id)
         {
             return $"Catcher Wong - {id}";

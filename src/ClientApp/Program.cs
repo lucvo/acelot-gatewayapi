@@ -13,13 +13,14 @@ namespace ClientApp
         private static async Task MainAsync()
         {
             // discover endpoints from metadata
-            var disco = await DiscoveryClient.GetAsync("http://localhost:7000");
+            var discoveryClient = new DiscoveryClient("https://auth.vip.com");
+            var disco = await discoveryClient.GetAsync();
+
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
                 return;
             }
-
             // request token
             var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
             var tokenResponse = await tokenClient.RequestClientCredentialsAsync("CustomerServices");
@@ -37,7 +38,7 @@ namespace ClientApp
             var client = new HttpClient();
             client.SetBearerToken(tokenResponse.AccessToken);
 
-            var response = await client.GetAsync("http://localhost:5000/customers/1");
+            var response = await client.GetAsync("https://services.vip.com/customers/1");
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);

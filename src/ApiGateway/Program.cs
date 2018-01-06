@@ -16,7 +16,8 @@ namespace SampeHttps
 
 			builder.UseKestrel()
 				.UseContentRoot(Directory.GetCurrentDirectory())
-				.UseStartup<Startup>();
+				.UseStartup<Startup>()
+                .UseIISIntegration();
 
 			var host = builder.Build();
 
